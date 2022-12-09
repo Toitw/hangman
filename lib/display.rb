@@ -19,7 +19,7 @@ module Display
     end
 
     def left_tries_message(rounds_left)
-        puts "You have #{rounds_left} rounds left. Choose one more letter"
+        puts "\nYou have #{rounds_left} rounds left. Choose one more letter"
     end
         
 end

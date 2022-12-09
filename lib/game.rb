@@ -2,7 +2,7 @@ require_relative 'dictionary.rb'
 require_relative 'display.rb'
 
 class Game
-    attr_reader :dictionary, :aleatory_word, :hidden_word, :selection, :letter
+    attr_reader :dictionary, :aleatory_word, :hidden_word, :selection, :letter, :rounds
     include Dictionary
     include Display
 
@@ -12,9 +12,8 @@ class Game
     end
 
     def play
-        start_game
-        play_round
-        check_letter(@letter, @aleatory_word)
+        start_game 
+        game_over?
     end
 
     def select_aleatory_word(word_arr)
@@ -29,17 +28,17 @@ class Game
     end 
 
     def hidden_word(word)
-        hidden_word = word.split("").map {|letter| "_ "}.join
-        hidden_word
+        word.gsub(/[a-z]/, "_")
     end
 
     def new_game
-        puts "starting"
+        @rounds = 8
         @wrong_letter_arr = []
         @dictionary = filter_dictionary(WORDS)
-        @aleatory_word = select_aleatory_word(@dictionary)
+        @aleatory_word = select_aleatory_word(@dictionary).chomp
         puts @aleatory_word
         @hidden_word = hidden_word(@aleatory_word)
+        puts @aleatory_word
         @hidden_word_arr = @hidden_word.split("")
         puts @hidden_word
         start_round_message(@aleatory_word)
@@ -52,13 +51,30 @@ class Game
     def check_letter(choosen_letter, word)
         if word.include?(choosen_letter)
             word.split("").each_with_index do |letter, index|
-                letter == choosen_letter ? @hidden_word_arr[index] = letter : next
+                letter == choosen_letter ? @hidden_word[index] = letter : next
             end
         else
             @wrong_letter_arr.push(letter)
+            @rounds -= 1
         end
-        puts @hidden_word_arr.join
+        puts @hidden_word + "        Used letters: #{@wrong_letter_arr.join}"
+        left_tries_message(@rounds)
     end
+
+    def game_over?
+        loop do
+            play_round
+            check_letter(@letter, @aleatory_word)
+            if rounds == 0
+                puts "You lose"
+                break
+            elsif @hidden_word.include?("_") == false
+                puts "You win"
+                break
+            end
+        end
+    end
+
 
 end
 
