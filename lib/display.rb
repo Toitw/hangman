@@ -19,7 +19,11 @@ module Display
     end
 
     def left_tries_message(rounds_left)
-        puts "\nYou have #{rounds_left} rounds left. Choose one more letter"
+        puts "\nYou have #{rounds_left} rounds left. Choose one more letter or press 'save' to save the game"
+    end
+
+    def load_game_message
+        puts "\nWrite down the name of the game you want to load"
     end
         
 end
