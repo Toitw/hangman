@@ -76,6 +76,7 @@ class Game
                 break
             elsif @hidden_word.include?("_") == false
                 puts "You win"
+                
                 break
             end
         end

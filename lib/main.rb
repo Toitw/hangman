@@ -12,6 +12,9 @@ def play
 end 
 
 def load_game
+    #Two next lines shows the saved games without the extension
+    files = Dir.glob('saved_games/*')
+    files.map {|file| puts File.basename(file, ".*")}
     load_game_message
     file_name = gets.chomp
     game_file = File.read("saved_games/#{file_name}.yaml")
