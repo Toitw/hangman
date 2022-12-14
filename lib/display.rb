@@ -25,5 +25,9 @@ module Display
     def load_game_message
         puts "\nWrite down the name of the game you want to load"
     end
+
+    def enter_right_value
+        puts "\nPlease, enter just 1 letter, not used already"
+    end
         
 end

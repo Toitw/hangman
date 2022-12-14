@@ -45,14 +45,12 @@ class Game
     end
 
     def play_round
-        puts "I need to change this"
-        p @aleatory_word
-        p @hidden_word
-        p @hidden_word_arr
-        p @wrong_letter_string
         @letter = gets.chomp.downcase
         if @letter == 'save'
             save_game
+        elsif @letter.length > 1 || @letter == /[a-z]/ || @wrong_letter_string.include?("#{@letter}")
+            enter_right_value
+            play_round
         end
     end
 
@@ -62,7 +60,7 @@ class Game
                 letter == choosen_letter ? @hidden_word[index] = letter : next
             end
         else
-            @wrong_letter_string + letter
+            @wrong_letter_string += letter
             @rounds -= 1
         end
         puts @hidden_word + "        Used letters: #{@wrong_letter_string}"
