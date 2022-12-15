@@ -1,6 +1,7 @@
 require_relative 'dictionary.rb'
 require_relative 'display.rb'
 require 'yaml'
+require 'colorize'
 
 class Game
     attr_reader :dictionary, :aleatory_word, :hidden_word, :selection, :letter, :rounds, :wrong_letter_string, :hidden_word_arr, :file_name
@@ -19,7 +20,7 @@ class Game
             @hidden_word_arr = hidden_word_arr
             @letter = letter
             @file_name = file_name
-            puts @hidden_word + "        Used letters: #{@wrong_letter_string}"
+            puts @hidden_word.green + "        Used letters: #{@wrong_letter_string.red}"
             left_tries_message(@rounds)
             game_over?
         end
@@ -40,9 +41,9 @@ class Game
         @dictionary = filter_dictionary(WORDS)
         @aleatory_word = select_aleatory_word(@dictionary).chomp
         @hidden_word = hidden_word(@aleatory_word)
-        puts @aleatory_word
         @hidden_word_arr = @hidden_word.split("")
-        puts @hidden_word
+        @file_name = ""
+        puts @hidden_word.green + "        Used letters: #{@wrong_letter_string.red}"
         start_round_message(@aleatory_word)
         game_over?
     end
@@ -51,7 +52,8 @@ class Game
         @letter = gets.chomp.downcase
         if @letter == 'save'
             save_game
-        elsif @letter.length > 1 || @letter == /[a-z]/ || @wrong_letter_string.include?("#{@letter}")
+            #HAy que modificar la línea siguiente para que no deje meter algo distinto a una letra
+        elsif @letter.length > 1 || @letter != /[a-z]/ || @wrong_letter_string.include?("#{@letter}")
             enter_right_value
             play_round
         end
@@ -63,28 +65,30 @@ class Game
                 letter == choosen_letter ? @hidden_word[index] = letter : next
             end
         else
-            @wrong_letter_string += letter
+            @wrong_letter_string += letter.red
             @rounds -= 1
         end
-        puts @hidden_word + "        Used letters: #{@wrong_letter_string}"
+        puts @hidden_word.green + "        Used letters: #{@wrong_letter_string}"
         left_tries_message(@rounds)
     end
 
     def game_over?
         loop do
             play_round
-            check_letter(@letter, @aleatory_word)
+            check_letter(@letter, @aleatory_word) unless @rounds < 0
             if @rounds == 0
-                puts "You lose"
+                puts "\nYou lose"
                 break
             elsif @hidden_word.include?("_") == false
-                puts "You win"
+                puts "\nYou win"
                 if @file_name == ""
                     break
                 else
                     File.delete("#{@file_name}")
                     break
                 end
+            elsif @rounds < 0
+                break
             end
         end
     end
@@ -102,15 +106,15 @@ class Game
     end
 
     def save_game
-        puts "What's the name of your game?"
+        puts "\nWhat's the name of your game?"
         game_file = gets.chomp
         saved_game_dir = "saved_games"
         Dir.mkdir(saved_game_dir) unless File.exists?saved_game_dir
         saved_game = File.open("#{saved_game_dir}/#{game_file}.yaml", "w")
         @file_name = "#{saved_game_dir}/#{game_file}.yaml"
         saved_game.write serialize
-        puts "Game saved"
-        @rounds = 0
+        puts "\nGame saved. Thank you for playing The Hangman :)"
+        @rounds = -1
     end
 
     def self.deserialize(string)

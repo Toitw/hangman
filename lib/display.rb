@@ -1,13 +1,13 @@
 module Display
     def welcome_message
-        puts "Welcome to Hangman! Instructions are the following:\n \
+        puts "\nWelcome to The Hangman! Instructions are the following:\n \
         A random 5 to 12 letter long word it's been generated while you read :) \n \
         Your mission is to find out which word it is. In order to discover it, \n \
         you will choose a letter every round. The computer will tell you if the letter \n \
         is within the word and display it for you to see in which position is it. \n \
         If the letter is not in the word, you will see it displayed outside of the word. \n\n \
         You can only fail the letter 8 times!! A counter will be displayed. \n\n \
-        Have fun :)"
+        Have fun :)\n\n"
     end
 
     def play_or_load_message

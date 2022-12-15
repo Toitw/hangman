@@ -2,6 +2,7 @@ require_relative 'dictionary.rb'
 require_relative 'display.rb'
 require_relative 'game.rb'
 require 'yaml'
+require 'colorize'
 
 include Display
 

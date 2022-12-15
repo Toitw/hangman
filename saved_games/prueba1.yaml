@@ -1,0 +1,15 @@
+---
+:aleatory_word: visitor
+:rounds: 5
+:wrong_letter_string: "\e[0;31;49ma\e[0m\e[0;31;49mp\e[0m\e[0;31;49mc\e[0m"
+:hidden_word: _____o_
+:hidden_word_arr:
+- _
+- _
+- _
+- _
+- _
+- _
+- _
+:letter: save
+:file_name: saved_games/prueba1.yaml

@@ -1,13 +1,15 @@
 ---
-:aleatory_word: allah
+:aleatory_word: ethical
 :rounds: 8
 :wrong_letter_string: ''
-:hidden_word: _ll__
+:hidden_word: e______
 :hidden_word_arr:
 - _
 - _
 - _
 - _
 - _
+- _
+- _
 :letter: save
-:file_name: saved_games/prueba3.yaml
+:file_name: saved_games/prueba9.yaml
