@@ -1,0 +1,13 @@
+---
+:aleatory_word: allah
+:rounds: 8
+:wrong_letter_string: ''
+:hidden_word: _ll__
+:hidden_word_arr:
+- _
+- _
+- _
+- _
+- _
+:letter: save
+:file_name: saved_games/prueba3.yaml

@@ -3,11 +3,11 @@ require_relative 'display.rb'
 require 'yaml'
 
 class Game
-    attr_reader :dictionary, :aleatory_word, :hidden_word, :selection, :letter, :rounds, :wrong_letter_string, :hidden_word_arr
+    attr_reader :dictionary, :aleatory_word, :hidden_word, :selection, :letter, :rounds, :wrong_letter_string, :hidden_word_arr, :file_name
     include Dictionary
     include Display
 
-    def initialize(aleatory_word = "", rounds = 8, wrong_letter_string = "", hidden_word = "", hidden_word_arr = [], letter = "")
+    def initialize(aleatory_word = "", rounds = 8, wrong_letter_string = "", hidden_word = "", hidden_word_arr = [], letter = "", file_name = "")
         if aleatory_word == ""
             @welcome_message = welcome_message
             new_game
@@ -18,6 +18,9 @@ class Game
             @hidden_word = hidden_word
             @hidden_word_arr = hidden_word_arr
             @letter = letter
+            @file_name = file_name
+            puts @hidden_word + "        Used letters: #{@wrong_letter_string}"
+            left_tries_message(@rounds)
             game_over?
         end
     end
@@ -76,8 +79,12 @@ class Game
                 break
             elsif @hidden_word.include?("_") == false
                 puts "You win"
-                
-                break
+                if @file_name == ""
+                    break
+                else
+                    File.delete("#{@file_name}")
+                    break
+                end
             end
         end
     end
@@ -89,7 +96,8 @@ class Game
             :wrong_letter_string => @wrong_letter_string,
             :hidden_word => @hidden_word,
             :hidden_word_arr => @hidden_word_arr,
-            :letter => @letter
+            :letter => @letter,
+            :file_name => @file_name
         })
     end
 
@@ -99,6 +107,7 @@ class Game
         saved_game_dir = "saved_games"
         Dir.mkdir(saved_game_dir) unless File.exists?saved_game_dir
         saved_game = File.open("#{saved_game_dir}/#{game_file}.yaml", "w")
+        @file_name = "#{saved_game_dir}/#{game_file}.yaml"
         saved_game.write serialize
         puts "Game saved"
         @rounds = 0
@@ -106,8 +115,7 @@ class Game
 
     def self.deserialize(string)
         data = YAML.load string
-        p data
-        self.new(data[:aleatory_word], data[:rounds], data[:wrong_letter_string], data[:hidden_word], data[:hidden_word_arr], data[:letter])
+        self.new(data[:aleatory_word], data[:rounds], data[:wrong_letter_string], data[:hidden_word], data[:hidden_word_arr], data[:letter], data[:file_name])
     end
 end
 

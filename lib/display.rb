@@ -27,7 +27,7 @@ module Display
     end
 
     def enter_right_value
-        puts "\nPlease, enter just 1 letter, not used already"
+        puts "\nPlease, enter just 1 letter, not used already, or enter 'save' to save the game"
     end
         
 end
