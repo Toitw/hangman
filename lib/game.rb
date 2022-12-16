@@ -20,7 +20,7 @@ class Game
             @hidden_word_arr = hidden_word_arr
             @letter = letter
             @file_name = file_name
-            puts @hidden_word.green + "        Used letters: #{@wrong_letter_string.red}"
+            puts @hidden_word.green + "        Used letters: #{@wrong_letter_string}"
             left_tries_message(@rounds)
             game_over?
         end
@@ -43,17 +43,17 @@ class Game
         @hidden_word = hidden_word(@aleatory_word)
         @hidden_word_arr = @hidden_word.split("")
         @file_name = ""
-        puts @hidden_word.green + "        Used letters: #{@wrong_letter_string.red}"
+        puts @hidden_word.green + "        Used letters: #{@wrong_letter_string}"
         start_round_message(@aleatory_word)
         game_over?
     end
 
     def play_round
         @letter = gets.chomp.downcase
+        abecedary = /[^a-z]/
         if @letter == 'save'
             save_game
-            #HAy que modificar la línea siguiente para que no deje meter algo distinto a una letra
-        elsif @letter.length > 1 || @letter != /[a-z]/ || @wrong_letter_string.include?("#{@letter}")
+        elsif @letter.length > 1 || abecedary.match(@letter)
             enter_right_value
             play_round
         end
@@ -68,7 +68,7 @@ class Game
             @wrong_letter_string += letter.red
             @rounds -= 1
         end
-        puts @hidden_word.green + "        Used letters: #{@wrong_letter_string}"
+        puts @hidden_word.green + "        Used letters: #{@wrong_letter_string.red}"
         left_tries_message(@rounds)
     end
 
@@ -78,6 +78,7 @@ class Game
             check_letter(@letter, @aleatory_word) unless @rounds < 0
             if @rounds == 0
                 puts "\nYou lose"
+                play_again
                 break
             elsif @hidden_word.include?("_") == false
                 puts "\nYou win"
@@ -92,6 +93,20 @@ class Game
             end
         end
     end
+
+    def play_again
+        puts "\nWould you like to play again? Y/N"
+        answer = gets.chomp
+        if answer == 'Y'
+            play
+        elsif answer == 'N'
+            puts "\nThanks for playing The Hangman"
+        else
+            puts "\nNot a valid answer"
+            play_again
+        end
+    end
+
 
     def serialize
         YAML.dump({
